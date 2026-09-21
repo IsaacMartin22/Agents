@@ -1,3 +1,15 @@
+Metadata-Version: 2.4
+Name: agents-boilerplate
+Version: 0.1.0
+Summary: Boilerplate for a Python-based multi-agent engineering platform
+Author: Isaac Martin
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+
 # Agents
 
 This repository is a lightweight Python starter for building a multi-agent software engineering platform.

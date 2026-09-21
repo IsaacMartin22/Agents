@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agents-boilerplate"
+version = "0.1.0"
+description = "Boilerplate for a Python-based multi-agent engineering platform"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Isaac Martin" }
+]
+license = { text = "MIT" }
+dependencies = [
+  "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+agent = "agents.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,48 @@
+name: Run Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      agent:
+        description: Agent to execute
+        required: true
+        default: documentation-agent
+        type: choice
+        options:
+          - documentation-agent
+          - code-review-agent
+          - security-agent
+      event_name:
+        description: Event label for the agent context
+        required: false
+        default: manual-dispatch
+        type: string
+
+jobs:
+  execute-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install project
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Trigger agent
+        env:
+          AGENT_NAME: ${{ github.event.inputs.agent }}
+          EVENT_NAME: ${{ github.event.inputs.event_name }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          REF: ${{ github.ref }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+        run: |
+          agent --run --agent "${AGENT_NAME}" --event "${EVENT_NAME}" --repo "${REPO}" --sha "${SHA}" --ref "${REF}"
